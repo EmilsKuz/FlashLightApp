@@ -1,6 +1,8 @@
 package com.example.flashlightapp;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.widget.ToggleButton;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +18,8 @@ public class MainActivity extends AppCompatActivity {
     private ToggleButton FlashOnOff;
     private String getCameraID;
     private CameraManager cameraManager;
+    private BatteryReceiver mBatteryReceiver = new BatteryReceiver();
+    private IntentFilter mIntentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,5 +58,16 @@ public class MainActivity extends AppCompatActivity {
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(mBatteryReceiver, mIntentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        unregisterReceiver(mBatteryReceiver);
+        super.onPause();
     }
 }
