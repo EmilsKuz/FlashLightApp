@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ToggleButton FlashOnOff;
     private String getCameraID;
-    private CameraManager cameraManager;
+    private CameraManager mCameraManager;
     private BatteryReceiver mBatteryReceiver = new BatteryReceiver();
     private IntentFilter mIntentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
 
@@ -26,24 +26,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FlashOnOff = findViewById(R.id.flashlight);
-        cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+        mCameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         try {
-            getCameraID = cameraManager.getCameraIdList()[0];
+            getCameraID = mCameraManager.getCameraIdList()[0];
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
     }
-    @RequiresApi(api = Build.VERSION_CODES.M)
+    @RequiresApi(api = Build.VERSION_CODES.M)//bez @requiresApi man rādija error pie setTorchMode, bet programma gāja, tas laikam lai uz vecākām ierīcēm kas nenojūk
     public void toggleFlashLight(View view) {//Flashlight on/off
         if (FlashOnOff.isChecked()) {
             try {
-                cameraManager.setTorchMode(getCameraID, true);
+                mCameraManager.setTorchMode(getCameraID, true);
             } catch (CameraAccessException e) {
                 e.printStackTrace();
             }
         } else {
             try {
-                cameraManager.setTorchMode(getCameraID, false);
+                mCameraManager.setTorchMode(getCameraID, false);
             } catch (CameraAccessException e) {
                 e.printStackTrace();
             }
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     public void finish() {//Izsledz flashlight, ja izslēdz app
         super.finish();
         try {
-            cameraManager.setTorchMode(getCameraID, false);
+            mCameraManager.setTorchMode(getCameraID, false);
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }

@@ -20,8 +20,8 @@ class BatteryReceiver extends BroadcastReceiver {
 
         if (action != null && action.equals(Intent.ACTION_BATTERY_CHANGED)) {
 
-            int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-            int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+            int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);//tagadeja batterija
+            int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);//max batterija
             int percentage = level * 100 / scale;
             percentageLabel.setText(percentage + "%");//Baterijas daudzums teksts
             Resources res = context.getResources();
